@@ -1,0 +1,45 @@
+DATA:
+main viewModel:
+    set at start:
+        input sequence
+
+    repository:
+        calculation params
+        Calc history (+ answer)
+
+
+sharedPreferences:
+    calculator mode (BASIC)
+    ANGLE UNIT (RAD)
+
+SETTINGS:
+calculation (calculation_category)
+    angle unit                      (calculation_angle_unit) (@string/rad)
+input (input_category):
+    max characters                  (input_max_char) (60)
+    sound                           (input_sound) (off)
+    sound file                      (input_sound...) TODO
+    vibrate                         (input_vibrate) (on)
+    vibrate duration                (input_vibrate_duration) (50)
+output (output_category):
+    displayed sigfig                (output_sigfig) (10)
+    scientific lower limit          (output_scientific_lower) (3)
+    scientific upper limit          (output_scientific_upper) (6)
+theme (theme_category):
+    dark theme                      (theme_dark) (false)
+memory (memory_category):
+    delete calculation history      (memory_history)
+    reset saved variables           (memory_variables)
+    factory reset                   TODO
+MENU:
+
+
+
+NAVIGATION DRAWER:
+Modes:
+    basic (nav_modes_basic)                 BasicModeFragment
+    scientific (nav_modes_scientific)       ScientificModeFragment
+    graphing (nav_modes_graphing)
+    physics (nav_modes_physics)
+settings (nav_settings)
+about/help TODO

@@ -1,0 +1,88 @@
+<resources>
+    <!--TODO angle button use vector + tint-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primaryColorLight</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColorLight</item>
+        <item name="colorOnPrimary">@color/primaryTextColorLight</item>
+        <item name="colorSecondary">@color/secondaryColorLight</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColorLight</item>
+        <item name="colorOnSecondary">@color/secondaryTextColorLight</item>
+        <!-- Status bar color -->
+        <item name="colorPrimaryDark">@color/primaryDarkColorLight</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents">
+        <item name="colorPrimary">@color/primaryColorDark</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColorDark</item>
+        <item name="colorOnPrimary">@color/primaryTextColorDark</item>
+        <item name="colorSecondary">@color/secondaryColorDark</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColorDark</item>
+        <item name="colorOnSecondary">@color/secondaryTextColorDark</item>
+
+        <item name="colorPrimaryDark">@color/primaryDarkColorDark</item>
+        <!-- Scrolling edge color -->
+        <item name="android:colorEdgeEffect">?colorControlHighlight</item>
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- Must not be in main theme, settings status bar will disappear -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Dark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppWidget"/>
+    <style name="AppTextAppearance" parent="TextAppearance.MaterialComponents.Body1"/>
+
+    <style name="AppWidget.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
+    <style name="AppWidget.Button.Transparent" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
+    <!-- Style used for buttons -->
+    <style name="AppWidget.Button.Calculator">
+        <item name="backgroundTint">?colorPrimaryVariant</item>
+        <item name="android:textAppearance">@style/AppTextAppearance.Button.Calculator</item>
+        <item name="android:autoSizeTextType">uniform</item>
+    </style>
+
+    <style name="AppTextAppearance.Button.Calculator" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="AppTextAppearance.Calculator">
+        <item name="fontFamily">@font/roboto_mono</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppTextAppearance.ConstantSymbol">
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AppTextAppearance.ConstantName">
+        <item name="fontFamily">@font/noto_sans</item>
+        <item name="android:textColor">?colorSecondary</item>
+    </style>
+
+</resources>

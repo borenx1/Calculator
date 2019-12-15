@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="calculation_category"
+        android:title="@string/settings_calculation">
+        <!--TODO key string resource-->
+        <ListPreference
+            android:key="calculation_angle_unit"
+            android:title="@string/settings_calculation_angle_unit"
+            android:entries="@array/angle_units"
+            android:entryValues="@array/angle_units_values"
+            android:defaultValue="0"
+            app:useSimpleSummaryProvider="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="input_category"
+        android:title="@string/settings_input">
+
+        <SwitchPreference
+            android:key="input_sound"
+            android:title="@string/settings_input_sound"
+            android:defaultValue="false"/>
+
+        <SwitchPreference
+            android:key="input_vibrate"
+            android:title="@string/settings_input_vibrate"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="output_category"
+        android:title="@string/settings_output">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="theme_category"
+        android:title="@string/settings_theme">
+
+        <SwitchPreference
+            android:key="theme_dark"
+            android:title="@string/settings_theme_dark"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="memory_category"
+        android:title="@string/settings_memory">
+
+        <Preference
+            android:key="memory_history"
+            android:title="@string/settings_memory_history"
+            android:summary="@string/settings_memory_history_summary"/>
+
+        <Preference
+            android:key="memory_variables"
+            android:title="@string/settings_memory_variables"
+            android:summary="@string/settings_memory_variables_summary"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

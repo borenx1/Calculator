@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snackbar_max_char">Maximum number of characters is %1$d.</string>
+    <string name="snackbar_error_null_answer">ERROR: Answer is not set</string>
+    <string name="snackbar_error_syntax">ERROR: Syntax</string>
+    <string name="snackbar_error_undefined">ERROR: Result is undefined</string>
+    <string name="snackbar_error_out_of_range">ERROR: Result is out of range</string>
+    <string name="snackbar_error_unknown">ERROR: Unknown</string>
+
+    <string name="snackbar_set_variable">Variable %1$s set to %2$s</string>
+    <string name="snackbar_set_variable_error">Value is invalid</string>
+    <string name="snackbar_set_variable_out_of_range">Value is out of range</string>
+</resources>

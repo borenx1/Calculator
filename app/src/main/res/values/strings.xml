@@ -1,0 +1,104 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="back">Back</string>
+    <string name="delete">Delete</string>
+    <string name="reset">Reset</string>
+    <string name="deg">Degree</string>
+    <string name="rad">Radian</string>
+    <!--Used in set variable edit texts-->
+    <string name="variable_value">Value</string>
+    <string name="variable_exponent">Exp</string>
+    <string name="variable_set_value">Set value</string>
+    <string name="variable_map">Map to variable</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="settings_calculation">Calculation</string>
+    <string name="settings_calculation_angle_unit">Angle unit</string>
+    <string name="settings_input">Input</string>
+    <string name="settings_input_max_char">Maximum characters</string>
+    <string name="settings_input_sound">Sound on button press</string>
+    <string name="settings_input_vibrate">Vibrate on button press</string>
+    <string name="settings_input_vibrate_duration">Vibrate duration (ms)</string>
+    <string name="settings_output">Output</string>
+    <string name="settings_output_sigfig">Significant figures</string>
+    <string name="settings_output_scientific_lower">Scientific notation lower limit</string>
+    <string name="settings_output_scientific_lower_summary">Show result with scientific notation when it is less or equal
+    to 10^-x.</string>
+    <string name="settings_output_scientific_upper">Scientific notation upper limit</string>
+    <string name="settings_output_scientific_upper_summary">Show result with scientific notation when it is greater or equal
+    to 10^x.</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_dark">Dark theme</string>
+    <string name="settings_memory">Memory</string>
+    <string name="settings_memory_history">Delete history</string>
+    <string name="settings_memory_history_summary">Delete history of past calculations.</string>
+    <string name="settings_memory_variables">Reset variables</string>
+    <string name="settings_memory_variables_summary">Reset custom variable values to initial values.</string>
+
+    <string name="menu_angle">Angle unit</string>
+
+    <string name="nav_modes">Calculator modes</string>
+    <string name="nav_modes_basic">Basic</string>
+    <string name="nav_modes_scientific">Scientific</string>
+    <string name="nav_modes_graphing">Graphing</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="dialog_settings_memory_history_title">Confirm delete history</string>
+    <string name="dialog_settings_memory_history_message">Delete history of past calculations.</string>
+    <string name="dialog_settings_memory_variables_title">Confirm reset variables</string>
+    <string name="dialog_settings_memory_variables_message">Reset custom variable values to initial values.</string>
+    <string name="dialog_variable_insert_title">Insert variable</string>
+    <string name="dialog_variable_map_title">Map variable to value</string>
+    <string name="dialog_variable_set_title">Set variable value</string>
+    <string name="dialog_constant_options_title">Insert constant</string>
+    <string name="dialog_constant_pi">Pi</string>
+    <string name="dialog_constant_tau">Tau</string>
+    <string name="dialog_constant_e">Euler\'s number</string>
+    <string name="dialog_constant_golden_ratio">Golden ratio</string>
+    <string name="dialog_constant_feigenbaum">Feigenbaum constant</string>
+    <string name="dialog_constant_speed_of_light">Speed of light</string>
+    <string name="dialog_constant_gravitational">Gravitational constant</string>
+    <string name="dialog_constant_planck_constant">Planck constant</string>
+    <string name="dialog_constant_planck_constant_reduced">Reduced Planck constant</string>
+    <string name="dialog_constant_elementary_charge">Elementary charge</string>
+    <string name="dialog_constant_vacuum_permeability">Vacuum permeability</string>
+    <string name="dialog_constant_vacuum_permittivity">Vacuum permittivity</string>
+    <string name="dialog_constant_boltzmann_constant">Boltzmann constant</string>
+    <string name="dialog_constant_stefan_boltzmann_constant">Stefan-Boltzmann constant</string>
+    <string name="dialog_constant_gas_constant">Gas constant</string>
+    <string name="dialog_constant_avogadro_constant">Avogadro constant</string>
+    <string name="dialog_constant_electron_mass">Electron mass</string>
+    <string name="dialog_constant_proton_mass">Proton mass</string>
+    <string name="dialog_constant_neutron_mass">Neutron mass</string>
+    <string name="dialog_constant_bohr_radius">Bohr radius</string>
+    <string name="dialog_constant_rydberg_constant">Rydberg constant</string>
+    <string name="dialog_constant_fine_structure_constant">Fine structure constant</string>
+    <string name="dialog_constant_astronomical_unit">Astronomical unit</string>
+    <string name="dialog_constant_light_year">Light year</string>
+    <string name="dialog_constant_parsec">Parsec</string>
+    <string name="dialog_constant_earth_mass">Earth mass</string>
+    <string name="dialog_constant_earth_radius">Earth radius</string>
+    <string name="dialog_constant_solar_mass">Solar mass</string>
+    <string name="dialog_constant_solar_radius">Solar radius</string>
+    <string name="dialog_constant_solar_luminosity">Solar luminosity</string>
+    <string name="dialog_constant_sun_temperature">Sun temperature</string>
+    <string name="dialog_constant_proton_mass_subatomic">Proton mass</string>
+    <string name="dialog_constant_neutron_mass_subatomic">Neutron mass</string>
+    <string name="dialog_constant_electron_mass_subatomic">Electron mass</string>
+    <string name="dialog_constant_muon_mass">Muon mass</string>
+    <string name="dialog_constant_tau_mass">Tau mass</string>
+    <string name="dialog_constant_up_mass">Up quark mass</string>
+    <string name="dialog_constant_down_mass">Down quark mass</string>
+    <string name="dialog_constant_charm_mass">Charm quark mass</string>
+    <string name="dialog_constant_strange_mass">Strange quark mass</string>
+    <string name="dialog_constant_top_mass">Top quark mass</string>
+    <string name="dialog_constant_bottom_mass">Bottom quark mass</string>
+    <string name="dialog_constant_w_mass">W boson mass</string>
+    <string name="dialog_constant_z_mass">Z boson mass</string>
+</resources>

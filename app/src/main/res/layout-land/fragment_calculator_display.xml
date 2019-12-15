@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/info_text_view"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/input_edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/AppTextAppearance.Calculator"
+        android:autoSizeTextType="uniform"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="ANS = 571897.1589"/>
+
+    <ProgressBar
+        android:id="@+id/calculate_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="@id/info_text_view"
+        app:layout_constraintBottom_toBottomOf="@id/info_text_view"
+        app:layout_constraintEnd_toEndOf="@id/info_text_view"
+        style="?android:progressBarStyleSmall"/>
+
+    <EditText
+        android:id="@+id/input_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/info_text_view"
+        app:layout_constraintBottom_toTopOf="@id/history_recycler_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/AppTextAppearance.Calculator"
+        android:textSize="24sp"
+        android:inputType="textMultiLine|textNoSuggestions"
+        tools:text="1+1"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/input_edit_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_history"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

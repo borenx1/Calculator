@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="angle_units">
+        <item>@string/rad</item>
+        <item>@string/deg</item>
+    </string-array>
+    <string-array name="angle_units_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string name="constant_maths">Mathematical</string>
+    <string name="constant_physics">Physical</string>
+    <string name="constant_electromagnetic">Electromagnetic</string>
+    <string name="constant_thermodynamic">Thermodynamic</string>
+    <string name="constant_atomic">Atomic</string>
+    <string name="constant_astronomical">Astronomical</string>
+    <string name="constant_subatomic">Subatomic</string>
+    <string-array name="constants">
+        <item>@string/constant_maths</item>
+        <item>@string/constant_physics</item>
+        <item>@string/constant_electromagnetic</item>
+        <item>@string/constant_thermodynamic</item>
+        <item>@string/constant_atomic</item>
+        <item>@string/constant_astronomical</item>
+        <item>@string/constant_subatomic</item>
+    </string-array>
+</resources>
