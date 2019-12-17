@@ -27,3 +27,11 @@ A powerful calculator.
 - `CResult`
 
   An object respresenting the result of a calculation. It includes the original expression, calculation parameters and the calculated result. The result does not have to be correct after re-calculating the original expression if the calcuation algorithm has changed.
+
+
+# References
+- [Shunting-yard algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm)
+- [Reverse Polish Notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
+- [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- [Parsing math expressions](https://www.freecodecamp.org/news/parsing-math-expressions-with-javascript-7e8f5572276e/)
+- [W3Eval](https://developer.ibm.com/articles/j-w3eval/)
