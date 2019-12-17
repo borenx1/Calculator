@@ -7,21 +7,23 @@ A powerful calculator.
 
 [Reverse Polish Notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
 
+[Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+
 
 ## Code
 ### Data types
-- `CUnit`
+- `CToken`
 
-  A unit in a mathematical expression. It could be a number, operator, variable, etc.
+  A token in a mathematical expression. It could be a number, operator, variable, etc.
   
 - `CExpression`
 
-  An object representing a mathematical expression containing an array of `CUnit`s and parameters.
+  An object representing a mathematical expression, an array of tokens.
 
-- `CExpression.Parameters`
+- `CParams`
 
   An object containing parameters for a calculation, including angle units and values for variables.
   
 - `CResult`
 
-  An object respresenting the result of a calculation. It includes the original expression (and its parameters) and the calculated result. The result does not have to be correct after re-calculating the original expression if the calcuation algorithm has changed.
+  An object respresenting the result of a calculation. It includes the original expression, calculation parameters and the calculated result. The result does not have to be correct after re-calculating the original expression if the calcuation algorithm has changed.
