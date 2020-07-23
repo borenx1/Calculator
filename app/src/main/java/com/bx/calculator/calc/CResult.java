@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import ch.obermuhlner.math.big.BigComplex;
 
 /**
@@ -35,7 +35,7 @@ public class CResult {
 
     /**
      * @return The input of the calculation. This instance is tied to the original input parameter
-     * of {@link Calculate#calculate(CUnit[], CParams)}.
+     * of {@link Calculate#calculate(CExpression, CParams)}.
      */
     public CUnit[] getInput() {
         return input;

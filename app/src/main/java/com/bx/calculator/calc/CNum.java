@@ -1,16 +1,15 @@
 package com.bx.calculator.calc;
 
-import com.bx.calculator.math.Maffs;
+import com.bx.calculator.calc.math.Maffs;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import ch.obermuhlner.math.big.BigComplex;
 
 /**

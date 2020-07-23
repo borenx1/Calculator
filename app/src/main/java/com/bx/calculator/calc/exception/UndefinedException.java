@@ -1,4 +1,4 @@
-package com.bx.calculator.math;
+package com.bx.calculator.calc.exception;
 
 /**
  * Thrown when the result of a calculation is undefined, eg. dividing by 0.

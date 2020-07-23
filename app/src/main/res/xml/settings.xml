@@ -12,7 +12,7 @@
             android:title="@string/settings_calculation_angle_unit"
             android:entries="@array/angle_units"
             android:entryValues="@array/angle_units_values"
-            android:defaultValue="0"
+            android:defaultValue="RAD"
             app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>

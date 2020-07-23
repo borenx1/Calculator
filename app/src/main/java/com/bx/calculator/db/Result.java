@@ -6,7 +6,6 @@ import com.bx.calculator.calc.CUnit;
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import ch.obermuhlner.math.big.BigComplex;

@@ -5,6 +5,7 @@ import com.bx.calculator.calc.CNum;
 import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.CUnit;
 import com.bx.calculator.calc.Calculate;
+import com.bx.calculator.calc.math.AngleUnit;
 import com.bx.calculator.db.Variable;
 
 import java.util.HashMap;
@@ -101,8 +102,9 @@ public class MainActivity extends AppCompatActivity
         setCalculatorMode(calculatorMode);
 
         // viewModel observers, listeners
+        // TODO if statement (or more elegant solution)
         CalculateManager.getInstance().setParamsAngleUnit(
-                Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("calculator_angle_unit", "0")));
+                AngleUnit.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("calculator_angle_unit", "RAD")));
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
         model.getAllVariables().observe(this, variables -> {
             final CalculateManager manager = CalculateManager.getInstance();
@@ -135,14 +137,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         final MenuItem angleItem = menu.findItem(R.id.menu_angle);
-        final int angleUnit = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this)
-                .getString("calculation_angle_unit", "0"));
+        final String angleUnit = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("calculation_angle_unit", "RAD");
         switch (angleUnit) {
-            case CParams.ANGLE_RAD:
+            // TODO use functions instead of literal
+            case "RAD":
                 angleItem.setIcon(R.drawable.ic_angle_rad);
                 angleItem.setTooltipText(getString(R.string.menu_angle) + " (" + getString(R.string.rad) + ")");
                 break;
-            case CParams.ANGLE_DEG:
+            case "DEG":
                 angleItem.setIcon(R.drawable.ic_angle_deg);
                 angleItem.setTooltipText(getString(R.string.menu_angle) + " (" + getString(R.string.deg) + ")");
                 break;
@@ -156,14 +159,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_angle:
-                final int angleUnit = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this)
-                        .getString("calculation_angle_unit", "0"));
+                final String angleUnit = PreferenceManager.getDefaultSharedPreferences(this)
+                        .getString("calculation_angle_unit", "RAD");
+                // TODO use functions instead of literal
                 switch (angleUnit) {
-                    case CParams.ANGLE_RAD:
-                        setAngleUnit(CParams.ANGLE_DEG);
+                    case "RAD":
+                        setAngleUnit(AngleUnit.DEG);
                         break;
-                    case CParams.ANGLE_DEG:
-                        setAngleUnit(CParams.ANGLE_RAD);
+                    case "DEG":
+                        setAngleUnit(AngleUnit.RAD);
                         break;
                     default:
                         Log.wtf(TAG, "Unrecognized angle unit: " + angleUnit);
@@ -207,7 +211,15 @@ public class MainActivity extends AppCompatActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case "calculation_angle_unit":
-                CalculateManager.getInstance().setParamsAngleUnit(Integer.valueOf(sharedPreferences.getString(key, "0")));
+                final String angleUnit = sharedPreferences.getString(key, "RAD");
+                System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxx" + angleUnit);
+                // Temp fix
+                if (angleUnit.equals("0")) {
+                    CalculateManager.getInstance().setParamsAngleUnit(AngleUnit.RAD);
+                } else {
+                    // TODO Use if statements
+                    CalculateManager.getInstance().setParamsAngleUnit(AngleUnit.valueOf(angleUnit));
+                }
                 break;
         }
     }
@@ -488,14 +500,14 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Sets the angle unit: changes the icon in the action bar, then saves the value.
-     * @param angleUnit one of {@link CParams#ANGLE_RAD}, {@link CParams#ANGLE_DEG}
+     * Set to default radians if null.
+     * @param angleUnit one of {@link AngleUnit#RAD}, {@link AngleUnit#DEG}
      */
-    protected void setAngleUnit(int angleUnit) {
-        if (angleUnit == CParams.ANGLE_RAD || angleUnit == CParams.ANGLE_DEG) {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putString("calculation_angle_unit", String.valueOf(angleUnit)).apply();
-            invalidateOptionsMenu();
-        } else {
-            Log.wtf(TAG, "Unknown angle unit: " + angleUnit);
+    protected void setAngleUnit(AngleUnit angleUnit) {
+        if (angleUnit == null) {
+            angleUnit = AngleUnit.RAD;
         }
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("calculation_angle_unit", String.valueOf(angleUnit)).apply();
+        invalidateOptionsMenu();
     }
 }

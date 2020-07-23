@@ -5,8 +5,8 @@
         <item>@string/deg</item>
     </string-array>
     <string-array name="angle_units_values">
-        <item>0</item>
-        <item>1</item>
+        <item>RAD</item>
+        <item>DEG</item>
     </string-array>
     <string name="constant_maths">Mathematical</string>
     <string name="constant_physics">Physical</string>

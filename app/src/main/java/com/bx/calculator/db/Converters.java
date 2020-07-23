@@ -2,6 +2,7 @@ package com.bx.calculator.db;
 
 import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.CUnit;
+import com.bx.calculator.calc.math.AngleUnit;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +64,8 @@ public class Converters {
     public static String params2String(CParams value) {
         try {
             final JSONObject object = new JSONObject();
-            object.put("angleUnit", value.getAngleUnit());
+            // TODO Decide on using string or int for saving AngleUnits
+            object.put("angleUnit", value.getAngleUnit().ordinal());
             final JSONObject varMapObject = new JSONObject();
             for (final CUnit u: value.getVariables()) {
                 final BigComplex val = value.getValue(u);
@@ -100,9 +102,10 @@ public class Converters {
                     variables.put(CUnit.get(v), BigComplex.valueOf(re, im));
                 }
             }
-            return new CParams(angleUnit, variables);
+            // TODO Decide on using string or int for saving AngleUnits
+            return new CParams(AngleUnit.values()[angleUnit], variables);
         } catch (JSONException e) {
-            return new CParams(CParams.ANGLE_RAD);
+            return new CParams();
         }
     }
 }

@@ -1,13 +1,12 @@
 package com.bx.calculator;
 
 import com.bx.calculator.calc.CFormat;
-import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.CResult;
 import com.bx.calculator.calc.CUnit;
 import com.bx.calculator.calc.exception.OutOfRangeException;
 import com.bx.calculator.calc.exception.SyntaxException;
 import com.bx.calculator.calc.exception.VariableException;
-import com.bx.calculator.math.UndefinedException;
+import com.bx.calculator.calc.exception.UndefinedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;

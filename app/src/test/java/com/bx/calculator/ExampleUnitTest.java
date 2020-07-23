@@ -1,15 +1,14 @@
 package com.bx.calculator;
 
-import android.text.Html;
-
+import com.bx.calculator.calc.CExpression;
 import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.Calculate;
-import com.bx.calculator.calc.CResult;
 import com.bx.calculator.calc.CUnit;
 import com.bx.calculator.calc.exception.VariableException;
 import com.bx.calculator.calc.exception.SyntaxException;
-import com.bx.calculator.math.Maffs;
-import com.bx.calculator.math.UndefinedException;
+import com.bx.calculator.calc.math.AngleUnit;
+import com.bx.calculator.calc.math.Maffs;
+import com.bx.calculator.calc.exception.UndefinedException;
 
 import java.math.BigDecimal;
 
@@ -91,7 +90,40 @@ public class ExampleUnitTest {
     @Test
     public void calcEmptySequence() {
         try {
-            Calculate.calculate(new CUnit[] {}, new CParams());
+            Calculate.calculate(new CExpression(), new CParams());
+            assert false;
+        } catch (SyntaxException e) {
+            assert true;
+        }
+    }
+
+    // )0
+    @Test
+    public void calcBracketEnd() {
+        try {
+            Calculate.calculate(new CExpression(CUnit.RIGHT_BRACKET, CUnit.ZERO), new CParams());
+            assert false;
+        } catch (SyntaxException e) {
+            assert true;
+        }
+    }
+
+    // 0(
+    @Test
+    public void calcBracketEnd2() {
+        try {
+            Calculate.calculate(new CExpression(CUnit.ZERO, CUnit.LEFT_BRACKET), new CParams());
+            assert false;
+        } catch (SyntaxException e) {
+            assert true;
+        }
+    }
+
+    // 1+()+1
+    @Test
+    public void calcEmptyBrackets() {
+        try {
+            Calculate.calculate(new CExpression(CUnit.ONE, CUnit.PLUS, CUnit.LEFT_BRACKET, CUnit.RIGHT_BRACKET, CUnit.PLUS, CUnit.ONE), new CParams());
             assert false;
         } catch (SyntaxException e) {
             assert true;
@@ -101,59 +133,75 @@ public class ExampleUnitTest {
     @Test
     public void calcNullAnswer() {
         try {
-            Calculate.calculate(new CUnit[] {CUnit.ANS}, new CParams());
+            Calculate.calculate(new CExpression(CUnit.ANS), new CParams());
             assert false;
         } catch (VariableException e) {
             assert true;
+        } catch (Exception e) {
+            System.out.println("Wrong exception");
+            assert false;
+        }
+    }
+
+    @Test
+    public void calcNullVariable() {
+        try {
+            Calculate.calculate(new CExpression(CUnit.A), new CParams());
+            assert false;
+        } catch (VariableException e) {
+            assert true;
+        } catch (Exception e) {
+            System.out.println("Wrong exception");
+            assert false;
         }
     }
 
     @Test
     public void calcCombineDigits() {
         assertEquals(BigComplex.ONE,
-                Calculate.calculate(new CUnit[] {CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.ONE), new CParams()).getAnswer());
         assertEquals(BigComplex.valueOf(20),
-                Calculate.calculate(new CUnit[] {CUnit.TWO, CUnit.ZERO}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.TWO, CUnit.ZERO), new CParams()).getAnswer());
         assertEquals(BigComplex.valueOf(new BigDecimal("0.5")),
-                Calculate.calculate(new CUnit[] {CUnit.POINT, CUnit.FIVE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.POINT, CUnit.FIVE), new CParams()).getAnswer());
     }
 
     @Test
     public void calcSignNumbers() {
         assertEquals(BigComplex.ONE.negate(),
-                Calculate.calculate(new CUnit[] {CUnit.MINUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.MINUS, CUnit.ONE), new CParams()).getAnswer());
         assertEquals(BigComplex.ONE,
-                Calculate.calculate(new CUnit[] {CUnit.MINUS, CUnit.MINUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.MINUS, CUnit.MINUS, CUnit.ONE), new CParams()).getAnswer());
         assertEquals(BigComplex.ONE.negate(),
-                Calculate.calculate(new CUnit[] {CUnit.MINUS, CUnit.PLUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.MINUS, CUnit.PLUS, CUnit.ONE), new CParams()).getAnswer());
     }
 
     @Test
     public void calcPlusMinus() {
         assertEquals(BigComplex.valueOf(2),
-                Calculate.calculate(new CUnit[] {CUnit.ONE, CUnit.PLUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.ONE, CUnit.PLUS, CUnit.ONE), new CParams()).getAnswer());
         assertEquals(BigComplex.ONE,
-                Calculate.calculate(new CUnit[] {CUnit.TWO, CUnit.PLUS, CUnit.MINUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.TWO, CUnit.PLUS, CUnit.MINUS, CUnit.ONE), new CParams()).getAnswer());
         assertEquals(BigComplex.valueOf(-3),
-                Calculate.calculate(new CUnit[] {CUnit.MINUS, CUnit.TWO, CUnit.MINUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.MINUS, CUnit.TWO, CUnit.MINUS, CUnit.ONE), new CParams()).getAnswer());
         assertEquals(BigComplex.valueOf(2),
-                Calculate.calculate(new CUnit[] {CUnit.MINUS, CUnit.MINUS, CUnit.THREE, CUnit.PLUS, CUnit.MINUS, CUnit.ONE}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.MINUS, CUnit.MINUS, CUnit.THREE, CUnit.PLUS, CUnit.MINUS, CUnit.ONE), new CParams()).getAnswer());
     }
 
     @Test
     public void calcExp() {
         assertEquals(BigComplex.valueOf(300),
-                Calculate.calculate(new CUnit[] {CUnit.THREE, CUnit.EXP, CUnit.TWO}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.THREE, CUnit.EXP, CUnit.TWO), new CParams()).getAnswer());
         assertEquals(BigComplex.valueOf(new BigDecimal("0.03")),
-                Calculate.calculate(new CUnit[] {CUnit.THREE, CUnit.EXP, CUnit.MINUS, CUnit.TWO}, new CParams()).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.THREE, CUnit.EXP, CUnit.MINUS, CUnit.TWO), new CParams()).getAnswer());
     }
 
     @Test
     public void calcTrigConversion() {
         assertEquals(BigComplex.valueOf(1),
-                Calculate.calculate(new CUnit[] {CUnit.SIN, CUnit.NINE, CUnit.ZERO}, new CParams(CParams.ANGLE_DEG)).getAnswer());
+                Calculate.calculate(new CExpression(CUnit.SIN, CUnit.NINE, CUnit.ZERO), new CParams(AngleUnit.DEG)).getAnswer());
 //        assertEquals(BigComplex.valueOf(new BigDecimal("0.5")),
-//                Calculate.calculate(new CSequence(CUnit.COS, CUnit.SIX, CUnit.ZERO), new CParams(CParams.ANGLE_DEG)).getAnswer());
+//                Calculate.calculate(new CSequence(CUnit.COS, CUnit.SIX, CUnit.ZERO), new Parameters(Parameters.ANGLE_DEG)).getAnswer());
     }
 
 

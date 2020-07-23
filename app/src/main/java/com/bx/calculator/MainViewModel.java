@@ -2,7 +2,6 @@ package com.bx.calculator;
 
 import android.app.Application;
 
-import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.CResult;
 import com.bx.calculator.calc.CUnit;
 import com.bx.calculator.db.Result;

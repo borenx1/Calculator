@@ -1,24 +1,22 @@
 package com.bx.calculator.calc;
 
+import androidx.annotation.NonNull;
+
+import com.bx.calculator.calc.math.AngleUnit;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import ch.obermuhlner.math.big.BigComplex;
 
 /**
- * Value class of parameters for calculations.
+ * Value (immutable) class representing parameters for a calculation.
  */
 public class CParams {
 
-    public static final int ANGLE_RAD = 0;
-    public static final int ANGLE_DEG = 1;
-
-    private int angleUnit;
+    private final AngleUnit angleUnit;
     /**
      * Map to replace a unit (variable) with a value.
      */
@@ -28,14 +26,14 @@ public class CParams {
     /**
      * Constructor for a {@link CParams} instance. Represents parameters for a calculation.
      *
-     * @param angleUnit Angle unit, {@link #ANGLE_RAD} or {@link #ANGLE_DEG}.
+     * @param angleUnit Angle unit, {@link AngleUnit#RAD} or {@link AngleUnit#DEG}.
      * @param variables Variable and value pairs. Pairs with {@code null} keys or values are ignored.
      * @throws IllegalArgumentException A {@link CUnit} is not a variable.
      * @see CUnit#isVariable()
-     * @see Calculate#calculate(CUnit[], CParams)
+     * @see Calculate#calculate(CExpression, CParams)
      */
-    public CParams(int angleUnit, Map<CUnit, BigComplex> variables) throws IllegalArgumentException {
-		// update equals method for adapter diff callback
+    public CParams(AngleUnit angleUnit, Map<CUnit, BigComplex> variables) throws IllegalArgumentException {
+        // update equals method for adapter diff callback
         this.angleUnit = angleUnit;
         if (variables != null) {
             for (Map.Entry<CUnit, BigComplex> entry: variables.entrySet()) {
@@ -50,12 +48,21 @@ public class CParams {
         }
     }
 
-    public CParams(int angleUnit) {
+    /**
+     * Constructor for a {@link CParams} instance with no variable mapping.
+     *
+     * @param angleUnit Angle unit, {@link AngleUnit#RAD} or {@link AngleUnit#DEG}.
+     */
+    public CParams(AngleUnit angleUnit) {
         this(angleUnit, null);
     }
 
+    /**
+     * Constructor for a default {@link CParams}. The angle unit is radians are there is no
+     * variable mapping.
+     */
     public CParams() {
-        this(ANGLE_RAD);
+        this(AngleUnit.RAD);
     }
 
     @NonNull
@@ -76,7 +83,7 @@ public class CParams {
         return false;
     }
 
-    public int getAngleUnit() {
+    public AngleUnit getAngleUnit() {
         return angleUnit;
     }
 

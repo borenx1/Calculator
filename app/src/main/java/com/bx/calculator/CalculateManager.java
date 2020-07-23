@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 
+import com.bx.calculator.calc.CExpression;
 import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.CResult;
 import com.bx.calculator.calc.CUnit;
@@ -12,7 +13,8 @@ import com.bx.calculator.calc.Calculate;
 import com.bx.calculator.calc.exception.VariableException;
 import com.bx.calculator.calc.exception.OutOfRangeException;
 import com.bx.calculator.calc.exception.SyntaxException;
-import com.bx.calculator.math.UndefinedException;
+import com.bx.calculator.calc.exception.UndefinedException;
+import com.bx.calculator.calc.math.AngleUnit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,7 +86,7 @@ public final class CalculateManager {
     @NonNull
     public synchronized CParams getParams() {
         if (params == null) {
-            params = new CParams(CParams.ANGLE_RAD);
+            params = new CParams();
         }
         return params;
     }
@@ -98,7 +100,7 @@ public final class CalculateManager {
         }
     }
 
-    public void setParamsAngleUnit(int angleUnit) {
+    public void setParamsAngleUnit(AngleUnit angleUnit) {
         synchronized (this) {
             this.params = new CParams(angleUnit, getParams().getVariableMap());
         }
@@ -229,7 +231,7 @@ public final class CalculateManager {
                 if (Thread.interrupted()) {
                     throw new InterruptedException();
                 }
-                final CResult result = Calculate.calculate(task.input, task.params);
+                final CResult result = Calculate.calculate(new CExpression(task.input), task.params);
                 if (Thread.interrupted()) {
                     throw new InterruptedException();
                 }

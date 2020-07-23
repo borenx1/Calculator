@@ -1,14 +1,20 @@
-package com.bx.calculator.math;
+package com.bx.calculator.calc.math;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
 import androidx.annotation.NonNull;
+
+import com.bx.calculator.calc.exception.UndefinedException;
+
 import ch.obermuhlner.math.big.BigComplex;
 import ch.obermuhlner.math.big.BigComplexMath;
 import ch.obermuhlner.math.big.BigDecimalMath;
 
+/**
+ * Helper class which contains static methods for calculating.
+ */
 public final class Maffs {
 
     /**

@@ -3,15 +3,12 @@ package com.bx.calculator.db;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.bx.calculator.calc.CParams;
 import com.bx.calculator.calc.CUnit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -19,7 +16,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import ch.obermuhlner.math.big.BigComplex;
 
 @Database(entities = {Result.class, Variable.class}, version = 1)
 @TypeConverters({Converters.class})

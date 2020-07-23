@@ -3,9 +3,9 @@ package com.bx.calculator.calc;
 import com.bx.calculator.calc.exception.OutOfRangeException;
 import com.bx.calculator.calc.exception.VariableException;
 import com.bx.calculator.calc.exception.SyntaxException;
-import com.bx.calculator.math.AngleUnit;
-import com.bx.calculator.math.Maffs;
-import com.bx.calculator.math.UndefinedException;
+import com.bx.calculator.calc.math.AngleUnit;
+import com.bx.calculator.calc.math.Maffs;
+import com.bx.calculator.calc.exception.UndefinedException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -43,52 +43,52 @@ public final class Calculate {
      *         <li>Non-digit or non plus or minus following {@link CUnit#EXP}.</li>
      *         <li>If plus or minus following {@link CUnit#EXP}, check if the following is an integer made up of digits.</li>
      *     </ol></li>
-     *     <li>Prepare the input using {@link #prepareSequence(CUnit[], CParams)}.</li>
-     *     <li>Calculate result using {@link #calculate2(CUnit[], CParams)}.</li>
+     *     <li>Prepare the input using {@link #prepareSequence(CExpression, CParams)}.</li>
+     *     <li>Calculate result using {@link #calculate2(CExpression, CParams)}.</li>
      *     <li>Round the result with {@link Maffs#round(BigComplex)}.</li>
      * </ol>
      *
-     * @param input Sequence of {@link CUnit}s to calculate.
-     * @param params Parameters of this calculation.
+     * @param expression Expression to calculate.
+     * @param params Parameters for calculation.
      * @return Result of calculation.
      * @throws NullPointerException {@code input} or a {@link CUnit} is {@code null}.
      * @throws VariableException Sequence contains {@link CUnit#isVariable()} and {@code params} does not contain a value for it.
      * @throws UndefinedException result is undefined
      * @throws SyntaxException syntax is wrong
      * @throws OutOfRangeException result is out of range
-     * @see #prepareSequence(CUnit[], CParams)
-     * @see #calculate2(CUnit[], CParams)
+     * @see #prepareSequence(CExpression, CParams)
+     * @see #calculate2(CExpression, CParams)
      * @see #isInRange(BigComplex)
      */
     @NonNull
-    public static CResult calculate(@NonNull final CUnit[] input, @NonNull final CParams params)
+    public static CResult calculate(@NonNull final CExpression expression, @NonNull final CParams params)
             throws NullPointerException, VariableException, UndefinedException, SyntaxException, OutOfRangeException {
         // 1. Empty sequence
-        if (input.length == 0) {
+        if (expression.size() == 0) {
             throw new SyntaxException();
         }
         // 2. Variable null
-        for (CUnit u: input) {
+        for (CUnit u: expression) {
             if (u.isVariable() && params.getValue(u) == null) {
                 throw new VariableException();
             }
         }
         // 3. Syntax errors
-        if (input[0] == CUnit.RIGHT_BRACKET || input[input.length - 1] == CUnit.LEFT_BRACKET) {
+        if (expression.get(0) == CUnit.RIGHT_BRACKET || expression.get(expression.size() - 1) == CUnit.LEFT_BRACKET) {
             throw new SyntaxException();
         }
-        if (input[input.length - 1].isOperator()) {
+        if (expression.get(expression.size() - 1).isOperator()) {
             throw new SyntaxException();
         }
-        if (input[0].isOperator() && !input[0].isPlusOrMinus()) {
+        if (expression.get(0).isOperator() && !expression.get(0).isPlusOrMinus()) {
             throw new SyntaxException();
         }
-        if (input[0].isPostFunction() || input[input.length - 1].isPreFunction()) {
+        if (expression.get(0).isPostFunction() || expression.get(expression.size() - 1).isPreFunction()) {
             throw new SyntaxException();
         }
-        for (int i = 0; i < input.length - 1; i++) {
-            final CUnit u1 = input[i];
-            final CUnit u2 = input[i + 1];
+        for (int i = 0; i < expression.size() - 1; i++) {
+            final CUnit u1 = expression.get(i);
+            final CUnit u2 = expression.get(i + 1);
             if (u1 == CUnit.POINT && u2 == CUnit.POINT) {
                 throw new SyntaxException();
             }
@@ -105,22 +105,22 @@ public final class Calculate {
                 throw new SyntaxException();
             }
             if (u1 == CUnit.EXP && u2.isPlusOrMinus()) {
-                for (int j = 2; i + j < input.length; j++) {
-                    if (input[i + j].isDigit()) {
+                for (int j = 2; i + j < expression.size(); j++) {
+                    if (expression.get(i + j).isDigit()) {
                         break;
-                    } else if (!input[i + j].isPlusOrMinus()) {
+                    } else if (!expression.get(i + j).isPlusOrMinus()) {
                         throw new SyntaxException();
                     }
                 }
             }
         }
         // 4. Prepare
-        final CUnit[] prepared = prepareSequence(input, params);
-        // 4. Calculate
+        final CExpression prepared = prepareSequence(expression, params);
+        // 5. Calculate
         final BigComplex resultNumber = requireInRange(calculate2(prepared, params));
-        // 5. Round
+        // 6. Round
         final BigComplex rounded = Maffs.round(resultNumber);
-        return new CResult(input, rounded, params);
+        return new CResult(expression.toArray(), rounded, params);
     }
 
     @NonNull
@@ -140,7 +140,7 @@ public final class Calculate {
         } else if (op == CUnit.EXP) {
             if (!n2.isReal()) {
                 throw new UndefinedException();
-            } else if (!isInteger(n2.re)) {
+            } else if (!Maffs.isInteger(n2.re)) {
                 throw new UndefinedException();
             } else if (!BigDecimalMath.isIntValue(n2.re)) { // is integer but not int
                 throw new OutOfRangeException();
@@ -171,9 +171,8 @@ public final class Calculate {
     }
 
     @NonNull
-    public static BigComplex calculateFunction(@NonNull final CUnit func, @NonNull final BigComplex n, final int angleUnit)
+    public static BigComplex calculateFunction(@NonNull final CUnit func, @NonNull final BigComplex n, final AngleUnit angleUnit)
             throws NullPointerException, UndefinedException, OutOfRangeException {
-        final AngleUnit mappedAngleUnit = angleUnit == CParams.ANGLE_RAD ? AngleUnit.RAD : AngleUnit.DEG;
         // TODO set boundaries for factorial, sinh etc.
         final BigComplex result;
         if (func == CUnit.PLUS) {
@@ -191,17 +190,17 @@ public final class Calculate {
         } else if (func == CUnit.SQRT) {
             result = Maffs.sqrt(n);
         } else if (func == CUnit.SIN) {
-            result = Maffs.sin(n, mappedAngleUnit);
+            result = Maffs.sin(n, angleUnit);
         } else if (func == CUnit.COS) {
-            result = Maffs.cos(n, mappedAngleUnit);
+            result = Maffs.cos(n, angleUnit);
         } else if (func == CUnit.TAN) {
-            result = Maffs.tan(n, mappedAngleUnit);
+            result = Maffs.tan(n, angleUnit);
         } else if (func == CUnit.ASIN) {
-            result = Maffs.asin(n, mappedAngleUnit);
+            result = Maffs.asin(n, angleUnit);
         } else if (func == CUnit.ACOS) {
-            result = Maffs.acos(n, mappedAngleUnit);
+            result = Maffs.acos(n, angleUnit);
         } else if (func == CUnit.ATAN) {
-            result = Maffs.atan(n, mappedAngleUnit);
+            result = Maffs.atan(n, angleUnit);
         } else if (func == CUnit.SINH) {
             result = Maffs.sinh(n);
         } else if (func == CUnit.COSH) {
@@ -215,11 +214,11 @@ public final class Calculate {
         } else if (func == CUnit.ATANH) {
             result = Maffs.atanh(n);
         } else if (func == CUnit.CSC) {
-            result = Maffs.csc(n, mappedAngleUnit);
+            result = Maffs.csc(n, angleUnit);
         } else if (func == CUnit.SEC) {
-            result = Maffs.sec(n, mappedAngleUnit);
+            result = Maffs.sec(n, angleUnit);
         } else if (func == CUnit.COT) {
-            result = Maffs.cot(n, mappedAngleUnit);
+            result = Maffs.cot(n, angleUnit);
         } else if (func == CUnit.FACTORIAL) {
             result = Maffs.factorial(n);
         } else if (func == CUnit.SQUARED) {
@@ -231,7 +230,7 @@ public final class Calculate {
         } else if (func == CUnit.PERCENT) {
             result = Maffs.scaleByPowerOfTen(n, -2);
         } else if (func == CUnit.ARG) {
-            final BigDecimal resultReal = angleUnit == CParams.ANGLE_DEG ? Maffs.arg(n, AngleUnit.DEG) : Maffs.arg(n, AngleUnit.RAD);
+            final BigDecimal resultReal = angleUnit == AngleUnit.DEG ? Maffs.arg(n, AngleUnit.DEG) : Maffs.arg(n, AngleUnit.RAD);
             result = BigComplex.valueOf(resultReal);
         } else if (func == CUnit.CONJ) {
             result = Maffs.conjugate(n);
@@ -239,15 +238,6 @@ public final class Calculate {
             throw new IllegalArgumentException("Unrecognized function: " + func);
         }
         return requireInRange(Maffs.round(result));
-    }
-
-    public static boolean isInteger(@NonNull BigDecimal n) {
-        try {
-            n.toBigIntegerExact();
-            return true;
-        } catch (ArithmeticException e) {
-            return false;
-        }
     }
 
     /**
@@ -317,7 +307,7 @@ public final class Calculate {
     // -------- CALCULATE HELPER FUNCTIONS -----------------------------------------------------------------------------------
 
     /**
-     * Called from {@link #calculate(CUnit[], CParams)}, prepares a sequence for calculation.
+     * Called from {@link #calculate(CExpression, CParams)}, prepares a sequence for calculation.
      * The original sequence is not modified. The preparation process is:
      * <ol>
      *     <li>Check if input sequence is empty.</li>
@@ -338,23 +328,23 @@ public final class Calculate {
      *     <li>Not contain any {@link CUnit#isVariable()}.</li>
      * </ul>
      *
-     * @param input input sequence to prepare
+     * @param expression input sequence to prepare
      * @param params Parameters of the calculation.
      * @return prepared sequence
      * @throws VariableException Sequence contains {@link CUnit#isVariable()} and {@code params} does not contain a value for it.
      * @throws SyntaxException Syntax error.
      * @throws OutOfRangeException A number that is out of range was encountered.
-     * @see #calculate(CUnit[], CParams)
+     * @see #calculate(CExpression, CParams)
      * @see #isInRange(BigComplex)
      */
     @NonNull
-    private static CUnit[] prepareSequence(@NonNull CUnit[] input, @NonNull CParams params)
+    private static CExpression prepareSequence(@NonNull CExpression expression, @NonNull CParams params)
             throws VariableException, SyntaxException, OutOfRangeException {
         // 1. Empty sequence
-        if (input.length == 0) {
+        if (expression.size() == 0) {
             throw new SyntaxException();
         }
-        final List<CUnit> prepared = new ArrayList<>(Arrays.asList(input));
+        final List<CUnit> prepared = expression.toList();
         // 2. balance brackets
         int bracketCount = 0;
         for (CUnit u: prepared) {
@@ -429,7 +419,7 @@ public final class Calculate {
             final CUnit u2 = prepared.get(i + 1);
             if (u2 == CUnit.PERCENT) {
                 if (u1 instanceof CNum && ((CNum) u1).isCombinedFromDigits()) {
-                    final BigComplex funcResult = calculateFunction(u2, ((CNum) u1).getNum(), 0);
+                    final BigComplex funcResult = calculateFunction(u2, ((CNum) u1).getNum(), AngleUnit.RAD);
                     prepared.set(i, new CNum(funcResult));
                     prepared.remove(i + 1);
                     i--;
@@ -448,12 +438,12 @@ public final class Calculate {
                 prepared.set(i, new CNum(params.getValue(u), false));
             }
         }
-        return prepared.toArray(new CUnit[] {});
+        return new CExpression(prepared);
     }
 
     /**
-     * <p>Called from {@link #calculate(CUnit[], CParams)}. Calculates the input sequence.
-     * Assumes that the input is prepared using {@link #prepareSequence(CUnit[], CParams)}.</p>
+     * <p>Called from {@link #calculate(CExpression, CParams)}. Calculates the input sequence.
+     * Assumes that the input is prepared using {@link #prepareSequence(CExpression, CParams)}.</p>
      * <p>Evaluation order:</p>
      * <ol>
      *     <li>Check for empty sequence (empty if called from empty brackets).</li>
@@ -476,15 +466,15 @@ public final class Calculate {
      * @throws SyntaxException syntax error
      * @throws UndefinedException result is undefined
      * @throws OutOfRangeException result is out of range
-     * @see #calculate(CUnit[], CParams)
-     * @see #prepareSequence(CUnit[], CParams)
+     * @see #calculate(CExpression, CParams)
+     * @see #prepareSequence(CExpression, CParams)
      */
-    private static BigComplex calculate2(@NonNull final CUnit[] input, final CParams params)
+    private static BigComplex calculate2(@NonNull final CExpression input, final CParams params)
             throws SyntaxException, UndefinedException, OutOfRangeException {
-        if (input.length == 0) {
+        if (input.size() == 0) {
             throw new SyntaxException();
         }
-        final List<CUnit> temp = new ArrayList<>(Arrays.asList(input));
+        final List<CUnit> temp = new ArrayList<>(input.toList());
         // 2. brackets
         for (int i = 0; i < temp.size(); i++) {
             if (temp.get(i) == CUnit.LEFT_BRACKET) {
@@ -503,7 +493,7 @@ public final class Calculate {
                 // remove brackets at ends
                 bracketSequence.remove(0);
                 bracketSequence.remove(bracketSequence.size() - 1);
-                final BigComplex bracketResult = calculate2(bracketSequence.toArray(new CUnit[] {}), params);
+                final BigComplex bracketResult = calculate2(new CExpression(bracketSequence), params);
                 temp.add(i, new CNum(bracketResult));
             }
         }
@@ -595,7 +585,7 @@ public final class Calculate {
                 if (funcSequence.isEmpty() || !hasNum) {
                     throw new SyntaxException();
                 }
-                final BigComplex funcResult = calculateFunction(func, calculate2(funcSequence.toArray(new CUnit[] {}), params), params.getAngleUnit());
+                final BigComplex funcResult = calculateFunction(func, calculate2(new CExpression(funcSequence), params), params.getAngleUnit());
                 temp.add(i, new CNum(funcResult));
             }
         }
@@ -690,179 +680,8 @@ public final class Calculate {
         }
     }
 
-//    /**
-//     * Called from {@link #calculate(CSequence, BigComplex, int)} to calculate the input sequence. Assumes the input is
-//     * prepared using {@link #prepareSequence(CUnit[])}.
-//     * <p>Evaluation method:</p>
-//     * <ol>
-//     *     <li>Check for empty sequence.</li>
-//     *     <li>Create stacks for calculation order.</li>
-//     *     <li>Iterate through sequence, changing the stacks depending on the unit:<ol type="a">
-//     *         <li></li>
-//     *     </ol></li>
-//     *     <li>Remove units from {@code unitStack} until it is empty, changing the stacks depending on the unit:<ol type="a">
-//     *         <li></li>
-//     *     </ol></li>
-//     *     <li>Return result if {@code numStack} only has 1 number, else raise {@link SyntaxException}.</li>
-//     * </ol>
-//     *
-//     * @param input sequence to calculate
-//     * @param answer number to replace {@link CUnit#ANS}
-//     * @param angleUnit {@link com.bx.calculator.math.AngleUnit#ANGLE_RAD} or {@link com.bx.calculator.math.AngleUnit#ANGLE_DEG}
-//     * @return result
-//     * @throws NullPointerException {@code input} is null or a {@link CUnit} is in {@code input} is null
-//     * @throws SyntaxException syntax error
-//     * @throws VariableException {@code input} contains {@link CUnit#ANS} and {@code answer} is null
-//     * @throws OutOfRangeException result is out of range
-//     * @throws UndefinedException result is undefined
-//     * @see #calculate(CSequence, BigComplex, int)
-//     * @see #prepareSequence(CUnit[])
-//     */
-//    private static BigComplex calculate2(@NonNull final CUnit[] input, @Nullable final BigComplex answer, final int angleUnit)
-//            throws NullPointerException, SyntaxException, VariableException, OutOfRangeException, UndefinedException {
-//        // 1. Empty sequence
-//        if (input.length == 0) {
-//            throw new SyntaxException();
-//        }
-//        // 2. Create stacks
-//        final Deque<BigComplex> numStack = new ArrayDeque<>();
-//        final Deque<CUnit> unitStack = new ArrayDeque<>(60);
-//        // 3. Build stacks
-//        for (CUnit u: input) {
-//            if (!u.isDigitOrPoint()) {
-//                performPopNumberOperation(unitStack, numStack);
-//                if (u.isPlusOrMinus()) {
-//                    if (performPlusMinusOperation(unitStack, numStack)) {
-//                        // next
-//                    } else if (performTimesDivideOperation(unitStack, numStack)) {
-//                        // next
-//                    }
-//                } else if (u.isTimesOrDivide()) {
-//                    performTimesDivideOperation(unitStack, numStack);
-//                }
-//            }
-//            unitStack.push(u);
-//        }
-//        performPopNumberOperation(unitStack, numStack);
-//        // 4. Pop stacks
-//        while (!unitStack.isEmpty()) {
-//            final CUnit u = unitStack.getFirst();
-//            if (u.isDigitOrPoint()) {
-//                throw new AssertionError("Digit or point found while popping unit stack");
-//            } else if (performPlusMinusOperation(unitStack, numStack)) {
-//                // next
-//            } else if (performTimesDivideOperation(unitStack, numStack)) {
-//
-//            } else {
-//                throw new SyntaxException();
-//            }
-//        }
-//        // 5. Return result
-//        if (numStack.size() != 1) {
-//            throw new SyntaxException();
-//        }
-//        return requireInRange(numStack.pop());
-//    }
-//
-//    /**
-//     * If the top of the {@code fromStack} is a digit or point, then pop the number from the stack and
-//     * push it to {@code toStack}.
-//     *
-//     * @param fromStack Stack to pop from.
-//     * @param toStack Stack to push to.
-//     * @return true If the operation was executed.
-//     * @throws SyntaxException Number popped from the stack is invalid.
-//     * @see #popNumberFromStack(Deque)
-//     * @see #isStackTopDigitOrPoint(Deque)
-//     */
-//    private static boolean performPopNumberOperation(@NonNull Deque<CUnit> fromStack, @NonNull Deque<BigComplex> toStack) throws SyntaxException {
-//        if (isStackTopDigitOrPoint(fromStack)) {
-//            toStack.push(popNumberFromStack(fromStack));
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    /**
-//     * Perform a plus or minus operation to modify the stacks if possible.
-//     *
-//     * @param fromStack Unit stack.
-//     * @param toStack Number stack.
-//     * @return true if the operation was executed.
-//     * @throws SyntaxException Syntax error.
-//     */
-//    private static boolean performPlusMinusOperation(@NonNull Deque<CUnit> fromStack, @NonNull Deque<BigComplex> toStack) throws SyntaxException {
-//        boolean performed = false;
-//        while (!fromStack.isEmpty() && fromStack.getFirst().isPlusOrMinus()) {
-//            final CUnit pm = fromStack.pop();
-//            final BigComplex n2 = requirePopNumber(toStack);
-//            if (toStack.isEmpty()) {   // signed number
-//                toStack.push(calculateFunction(pm, n2, 0));
-//            } else {
-//                toStack.push(calculateOperator(pm, toStack.pop(), n2));
-//            }
-//            performed = true;
-//        }
-//        return performed;
-//    }
-//
-//    /**
-//     * Perform a times or divide operation to modify the stacks if possible.
-//     *
-//     * @param fromStack Unit stack.
-//     * @param toStack Number stack.
-//     * @return true if the operation was executed.
-//     * @throws SyntaxException Syntax error.
-//     */
-//    private static boolean performTimesDivideOperation(@NonNull Deque<CUnit> fromStack, @NonNull Deque<BigComplex> toStack) throws SyntaxException {
-//        if (!fromStack.isEmpty() && fromStack.getFirst().isTimesOrDivide()) {
-//            final CUnit op = fromStack.pop();
-//            final BigComplex n2 = requirePopNumber(toStack);
-//            final BigComplex n1 = requirePopNumber(toStack);
-//            toStack.push(calculateOperator(op, n1, n2));
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
-//    /**
-//     * Pops the digits and points from the stack, then returns the number that is formed by them.
-//     *
-//     * @param stack stack to pop from
-//     * @return number from stack
-//     * @throws SyntaxException number formed from the stack is invalid ({@link NumberFormatException}), or the top
-//     * {@link CUnit} is not a digit or point, so tries to format an empty string
-//     * @see #performPopNumberOperation(Deque, Deque)
-//     */
-//    @NonNull
-//    private static BigComplex popNumberFromStack(@NonNull Deque<CUnit> stack) throws SyntaxException {
-//        final StringBuilder builder = new StringBuilder();
-//        while (isStackTopDigitOrPoint(stack)) {
-//            builder.insert(0, stack.pop());
-//        }
-//        try {
-//            return BigComplex.valueOf(new BigDecimal(builder.toString()));
-//        } catch (NumberFormatException e) {
-//            throw new SyntaxException(e.getMessage());
-//        }
-//    }
-//
-//    /**
-//     * @return true if the top of the stack is a digit or point
-//     */
-//    private static boolean isStackTopDigitOrPoint(@NonNull Deque<CUnit> stack) {
-//        return !stack.isEmpty() && stack.getFirst().isDigitOrPoint();
-//    }
-//
-//    private static BigComplex requirePopNumber(@NonNull Deque<BigComplex> stack) throws SyntaxException {
-//        if (stack.isEmpty()) {
-//            throw new SyntaxException();
-//        } else {
-//            return stack.pop();
-//        }
-//    }
+
+
 
     private Calculate() {}
 }
