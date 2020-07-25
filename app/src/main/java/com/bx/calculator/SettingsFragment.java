@@ -51,6 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         SeekBarPreference maxCharacters = new SeekBarPreference(context);
         maxCharacters.setKey("input_max_char");
         maxCharacters.setTitle(R.string.settings_input_max_char);
+        maxCharacters.setShowSeekBarValue(true);
         maxCharacters.setMin(20);
         maxCharacters.setMax(99);
         maxCharacters.setSeekBarIncrement(1);
@@ -60,6 +61,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         SeekBarPreference vibrateDuration = new SeekBarPreference(context);
         vibrateDuration.setKey("input_vibrate_duration");
         vibrateDuration.setTitle(R.string.settings_input_vibrate_duration);
+        vibrateDuration.setShowSeekBarValue(true);
         vibrateDuration.setMin(20);
         vibrateDuration.setMax(100);
         vibrateDuration.setSeekBarIncrement(10);
@@ -68,6 +70,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         SeekBarPreference sigfig = new SeekBarPreference(context);
         sigfig.setKey("output_sigfig");
         sigfig.setTitle(R.string.settings_output_sigfig);
+        sigfig.setShowSeekBarValue(true);
         sigfig.setMin(6);
         sigfig.setMax(20);
         sigfig.setSeekBarIncrement(1);
@@ -77,6 +80,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         scientificLower.setKey("output_scientific_lower");
         scientificLower.setTitle(R.string.settings_output_scientific_lower);
         scientificLower.setSummary(R.string.settings_output_scientific_lower_summary);
+        scientificLower.setShowSeekBarValue(true);
         scientificLower.setMin(3);
         scientificLower.setMax(10);
         scientificLower.setSeekBarIncrement(1);
@@ -86,6 +90,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         scientificUpper.setKey("output_scientific_upper");
         scientificUpper.setTitle(R.string.settings_output_scientific_upper);
         scientificUpper.setSummary(R.string.settings_output_scientific_upper_summary);
+        scientificUpper.setShowSeekBarValue(true);
         scientificUpper.setMin(3);
         scientificUpper.setMax(10);
         scientificUpper.setSeekBarIncrement(1);
