@@ -1,6 +1,10 @@
 # Calculator
 A powerful calculator.
 
+## How to open
+APK: app-debug.apk
+Google Play Store: https://play.google.com/store/apps/details?id=com.bx.calculator
+
 ## Logic
 ### Expression Evaluating Algorithm:
 [Shunting-yard algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm), which some modifications for pre-functions, post-functions, implied multiplication and negations.
