@@ -3,6 +3,7 @@ A powerful calculator.
 
 ## How to open
 APK: app-debug.apk
+
 Google Play Store: https://play.google.com/store/apps/details?id=com.bx.calculator
 
 ## Logic
