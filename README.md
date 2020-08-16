@@ -40,3 +40,8 @@ Google Play Store: https://play.google.com/store/apps/details?id=com.bx.calculat
 - [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
 - [Parsing math expressions](https://www.freecodecamp.org/news/parsing-math-expressions-with-javascript-7e8f5572276e/)
 - [W3Eval](https://developer.ibm.com/articles/j-w3eval/)
+
+## Screenshots
+![Screenshot 1](https://github.com/borenx1/Calculator/blob/master/screenshots/1.png?raw=true)
+![Screenshot 2](https://github.com/borenx1/Calculator/blob/master/screenshots/2.png?raw=true)
+![Screenshot 3](https://github.com/borenx1/Calculator/blob/master/screenshots/3.png?raw=true)
